@@ -1,23 +1,40 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import MedList from './components/MedList';
+import MedForm from './components/MedForm';
+import { getMedications, addMedication, deleteMedication } from './services/api';
 
 function App() {
+  const [medications, setMedications] = useState([]);
+
+  useEffect(() => {
+    fetchMedications();
+  }, []);
+
+  const fetchMedications = async () => {
+    const medicationsData = await getMedications();
+    setMedications(medicationsData.medications);
+  };
+
+  const handleAddMedication = async (medicationData) => {
+    const response = await addMedication(medicationData);
+    if (response.message === 'Medication created successfully') {
+      fetchMedications();
+    }
+  };
+
+  const handleDeleteMedication = async (medicationId) => {
+    const response = await deleteMedication(medicationId);
+    if (response.message === 'Medication deleted successfully') {
+      fetchMedications();
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Pharmacy Management System</h1>
+      <MedList medications={medications} fetchMedications={fetchMedications} onDelete={handleDeleteMedication} />
+      <MedForm addMedication={handleAddMedication} />
     </div>
   );
 }
