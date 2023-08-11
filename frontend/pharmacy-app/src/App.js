@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import MedList from './components/MedList';
 import MedForm from './components/MedForm';
 import { getMedications, addMedication, deleteMedication } from './services/api';
@@ -31,11 +32,30 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <h1>Pharmacy Management System</h1>
-      <MedList medications={medications} fetchMedications={fetchMedications} onDelete={handleDeleteMedication} />
-      <MedForm addMedication={handleAddMedication} />
-    </div>
+    <Router>
+      <div className="App">
+        <h1>Pharmacy Management System</h1>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/view">View Medications</Link>
+            </li>
+            <li>
+              <Link to="/add">Add Medication</Link>
+            </li>
+          </ul>
+        </nav>
+        <Routes>
+          <Route
+            path="/view"
+            element={<MedList medications={medications} onDelete={handleDeleteMedication} />}/>
+          <Route path="/add" element={<MedForm addMedication={handleAddMedication} />} /> {/* Add Medication page */}
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
