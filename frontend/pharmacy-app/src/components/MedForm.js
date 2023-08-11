@@ -5,12 +5,12 @@ function MedForm({ addMedication }) {
   const [dosageForm, setDosageForm] = useState('');
   const [concentration, setConcentration] = useState('');
   const [manufacturer, setManufacturer] = useState('');
-  const [expirationdate, setExpirationDate] = useState('');
-  const [din, setDin] = useState('');
+  const [expiration_date, setExpirationDate] = useState('');
+  const [DIN, setDin] = useState('');
   const [quantity, setQuantity] = useState('');
   const [price, setPrice] = useState('');
-  const [prescriptionstatus, setPrescriptionStatus] = useState('');
-  const [storageconditions, setStorageConditions] = useState('');
+  const [prescription_status, setPrescriptionStatus] = useState('');
+  const [storage_conditions, setStorageConditions] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,12 +19,12 @@ function MedForm({ addMedication }) {
       dosage_form: dosageForm,
       concentration: concentration,
       manufacturer: manufacturer,
-      expirationdate: expirationdate,
-      din: din,
+      expiration_date: expiration_date,
+      DIN: DIN,
       quantity: quantity,
       price: price,
-      prescriptionstatus: prescriptionstatus,
-      storageconditions: storageconditions
+      prescription_status: prescription_status,
+      storage_conditions: storage_conditions
     });
     setMedicineName('');
     setDosageForm('');
@@ -85,8 +85,8 @@ function MedForm({ addMedication }) {
         <label> 
           Expiration Date:
           <input
-            type="text"
-            value={expirationdate}
+            type="date"
+            value={expiration_date}
             onChange={(e) => setExpirationDate(e.target.value)}
           />
         </label>
@@ -96,7 +96,7 @@ function MedForm({ addMedication }) {
           DIN:
           <input
             type="text"
-            value={din}
+            value={DIN}
             onChange={(e) => setDin(e.target.value)}
           />
         </label>
@@ -126,7 +126,7 @@ function MedForm({ addMedication }) {
           Prescription Status:
           <input
             type="text"
-            value={prescriptionstatus}
+            value={prescription_status}
             onChange={(e) => setPrescriptionStatus(e.target.value)}
           />
         </label>
@@ -136,7 +136,7 @@ function MedForm({ addMedication }) {
           Storage Conditions:
           <input
             type="text"
-            value={storageconditions}
+            value={storage_conditions}
             onChange={(e) => setStorageConditions(e.target.value)}
           />
         </label>

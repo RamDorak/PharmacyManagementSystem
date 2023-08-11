@@ -15,11 +15,11 @@ class Medication(db.Model):
     dosage_form = db.Column(db.String(100))
     concentration = db.Column(db.String(100))
     manufacturer = db.Column(db.String(255))
-    expiration_date = db.Column(db.Date)
+    expiration_date = db.Column(db.String(100))
     DIN = db.Column(db.String(20))
     quantity = db.Column(db.Integer)
     price = db.Column(db.Numeric(10, 2))
-    prescription_status = db.Column(db.Boolean)
+    prescription_status = db.Column(db.String(100))
     storage_conditions = db.Column(db.String(255))
 
     def serialize(self):

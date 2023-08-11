@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { deleteMedication } from '../services/api'; // Import the deleteMedication function
 import {fetchMedications} from '../App';
 
 function MedList({ medications, fetchMedications }) {
+  const [medicine_name, setMedicineName] = useState('');
+
   const handleDelete = async (medicationId) => {
     const response = await deleteMedication(medicationId);
     if (response.message === 'Medication deleted successfully') {

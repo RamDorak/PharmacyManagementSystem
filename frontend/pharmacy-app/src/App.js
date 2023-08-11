@@ -3,7 +3,9 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import MedList from './components/MedList';
 import MedForm from './components/MedForm';
-import { getMedications, addMedication, deleteMedication } from './services/api';
+import UpdatePage from './components/UpdatePage';
+import MedUpdate from './components/MedUpdate';
+import { getMedications, addMedication, deleteMedication , updateMedication } from './services/api';
 
 function App() {
   const [medications, setMedications] = useState([]);
@@ -31,6 +33,13 @@ function App() {
     }
   };
 
+  const handleUpdateMedication = async (medicationId, updatedData) => {
+    const response = await updateMedication(medicationId, updatedData);
+    if (response.message === 'Medication updated successfully') {
+      fetchMedications();
+    }
+  };
+
   return (
     <Router>
       <div className="App">
@@ -46,17 +55,32 @@ function App() {
             <li>
               <Link to="/add">Add Medication</Link>
             </li>
+            <li>
+              <Link to="/update">Update Medicine</Link>
+            </li>
           </ul>
         </nav>
         <Routes>
+          <Route path="/" element={<Home/>}/>
           <Route
             path="/view"
             element={<MedList medications={medications} onDelete={handleDeleteMedication} />}/>
           <Route path="/add" element={<MedForm addMedication={handleAddMedication} />} /> {/* Add Medication page */}
+          <Route
+            path="/update"
+            element={<UpdatePage onUpdate={handleUpdateMedication} />}
+          />
+          <Route path="/update/:medicationId" element={<MedUpdate />} />
         </Routes>
       </div>
     </Router>
   );
+}
+
+function Home(){
+  return(
+    <div>Welcome to Pharmacy Management System</div>
+  )
 }
 
 export default App;

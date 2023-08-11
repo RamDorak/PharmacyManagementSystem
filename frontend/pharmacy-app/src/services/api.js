@@ -5,6 +5,11 @@ async function getMedications() {
   return response.json();
 }
 
+async function getMedication(medicationId) {
+  const response = await fetch(`${API_BASE_URL}/medications/${medicationId}`);
+  return response.json();
+}
+
 async function addMedication(medicationData) {
   const response = await fetch(`${API_BASE_URL}/medications`, {
     method: 'POST',
@@ -24,4 +29,15 @@ async function deleteMedication(medicationId) {
   return response.json();
 }
 
-export { getMedications, addMedication , deleteMedication};
+async function updateMedication(medicationId, updatedData) {
+  const response = await fetch(`${API_BASE_URL}/medications/${medicationId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(updatedData),
+  });
+  return response.json();
+}
+
+export { getMedications, addMedication , deleteMedication, updateMedication, getMedication};
