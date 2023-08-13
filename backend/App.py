@@ -119,7 +119,6 @@ pharmacy_class= pharmacy_classes['pharmacy1']
 
 @app.route('/login', methods=['POST'])        
 def login():
-    global pharmacy_name
     data= request.json
     username= data['username']
     password= data['password']
@@ -147,13 +146,12 @@ def login():
 def hello():
     return 'Hello this is backend! \n Route to ''/medications'' if you want to see the medications data'
 
-@app.route('/medications', methods=['GET'])
-def get_medications():
+@app.route('/medications/<string:pharmacy_name>', methods=['GET'])
+def get_medications(pharmacy_name):
     medication = pharmacy_class.query.all()
     serialized_medications = [med.serialize() for med in medication]
     response = jsonify(medications=serialized_medications)
     response.headers.add('Access-Control-Allow-Origin', '*')  # Allow requests from all origins
-    print(pharmacy_class)
     return response
 
 @app.route('/medications', methods=['POST'])
@@ -162,7 +160,6 @@ def create_medication():
     new_medication = pharmacy_class(**data)
     db.session.add(new_medication)
     db.session.commit()
-    print(pharmacy_class)
     return jsonify(message='Medication created successfully')
 
 @app.route('/medications/<int:medication_id>', methods=['GET'])

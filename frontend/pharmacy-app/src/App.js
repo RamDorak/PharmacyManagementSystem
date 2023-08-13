@@ -76,7 +76,7 @@ function Home(){
       <nav>
         <ul>
           <li>
-            <Link to="/home">Home</Link>
+            <Link to="/">Home</Link>
           </li>
           <li>
             <Link to="/view">View Medications</Link>
