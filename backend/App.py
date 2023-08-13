@@ -11,7 +11,6 @@ db = SQLAlchemy(app)
 
 CORS(app, origins='http://localhost:3000', methods=['GET', 'POST', 'PUT', 'DELETE'], allow_headers=['Content-Type'])
 
-
 class users(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
@@ -110,17 +109,17 @@ pharmacy_classes= {
 
 pharmacy_class= pharmacy_classes['pharmacy1']
 
-@app.route('/login', methods=['OPTIONS'])
-def options():
-    response = jsonify(message='CORS OK')
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', '*')
-    response.headers.add('Access-Control-Allow-Methods', '*')
-    return response
-
+# @app.route('/login', methods=['OPTIONS'])
+# def options():
+#     response = jsonify(message='CORS OK')
+#     response.headers.add('Access-Control-Allow-Origin', '*')
+#     response.headers.add('Access-Control-Allow-Headers', '*')
+#     response.headers.add('Access-Control-Allow-Methods', '*')
+#     return response
 
 @app.route('/login', methods=['POST'])        
 def login():
+    global pharmacy_name
     data= request.json
     username= data['username']
     password= data['password']
@@ -132,6 +131,7 @@ def login():
         # Dynamically choose the appropriate class based on pharmacy_name
         # pharmacy_class = globals()[pharmacy_name]
         pharmacy_class= pharmacy_classes.get(pharmacy_name)
+        print(pharmacy_class)
         # Now you can use the medication_class to interact with the specific pharmacy table
         # ...
         medication= pharmacy_class.query.all()
@@ -153,6 +153,7 @@ def get_medications():
     serialized_medications = [med.serialize() for med in medication]
     response = jsonify(medications=serialized_medications)
     response.headers.add('Access-Control-Allow-Origin', '*')  # Allow requests from all origins
+    print(pharmacy_class)
     return response
 
 @app.route('/medications', methods=['POST'])
@@ -161,6 +162,7 @@ def create_medication():
     new_medication = pharmacy_class(**data)
     db.session.add(new_medication)
     db.session.commit()
+    print(pharmacy_class)
     return jsonify(message='Medication created successfully')
 
 @app.route('/medications/<int:medication_id>', methods=['GET'])

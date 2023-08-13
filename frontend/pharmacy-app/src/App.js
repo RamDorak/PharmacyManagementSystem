@@ -10,6 +10,11 @@ import { getMedications, addMedication, deleteMedication , updateMedication } fr
 
 function App() {
   const [medications, setMedications] = useState([]);
+  const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+
+  const updateLoginStatus = (status) => {
+    setIsLoggedIn(status);
+  }
 
   useEffect(() => {
     fetchMedications();
@@ -45,26 +50,11 @@ function App() {
     <Router>
       <div className="App">
         <h1>Pharmacy Management System</h1>
-        {/* <nav>
-          <ul>
-            <li>
-              <Link to="/home">Home</Link>
-            </li>
-            <li>
-              <Link to="/view">View Medications</Link>
-            </li>
-            <li>
-              <Link to="/add">Add Medication</Link>
-            </li>
-            <li>
-              <Link to="/update">Update Medicine</Link>
-            </li>
-          </ul> 
-        </nav> */}
-        <Login />
+        { isLoggedIn ? <Home /> :
+        <Login updateLoginStatus={updateLoginStatus}/> }
         <Routes>
-          <Route path="/" component={Login} /> 
-          <Route path="/home" element={<Home/>}/>
+          <Route path="/" component={<Login />}/> 
+          {/* <Route path="/home" element={<Home/>}/> */}
           <Route
             path="/view"
             element={<MedList medications={medications} onDelete={handleDeleteMedication} />}/>

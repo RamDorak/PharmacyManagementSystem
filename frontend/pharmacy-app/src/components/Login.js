@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import {Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import App from '../App';
 
-function Login() {
+function Login({ updateLoginStatus  }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [ isLoggedIn, setIsLoggedIn ] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -16,6 +18,7 @@ function Login() {
       
       if(response.status === 200){
         navigate('/home');
+        updateLoginStatus(true);
       }
 
       // Handle successful login response here
