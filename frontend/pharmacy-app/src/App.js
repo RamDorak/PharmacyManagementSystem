@@ -5,6 +5,7 @@ import MedList from './components/MedList';
 import MedForm from './components/MedForm';
 import UpdatePage from './components/UpdatePage';
 import MedUpdate from './components/MedUpdate';
+import Login from './components/Login';
 import { getMedications, addMedication, deleteMedication , updateMedication } from './services/api';
 
 function App() {
@@ -44,10 +45,10 @@ function App() {
     <Router>
       <div className="App">
         <h1>Pharmacy Management System</h1>
-        <nav>
+        {/* <nav>
           <ul>
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/home">Home</Link>
             </li>
             <li>
               <Link to="/view">View Medications</Link>
@@ -58,10 +59,12 @@ function App() {
             <li>
               <Link to="/update">Update Medicine</Link>
             </li>
-          </ul>
-        </nav>
+          </ul> 
+        </nav> */}
+        <Login />
         <Routes>
-          <Route path="/" element={<Home/>}/>
+          <Route path="/" component={Login} /> 
+          <Route path="/home" element={<Home/>}/>
           <Route
             path="/view"
             element={<MedList medications={medications} onDelete={handleDeleteMedication} />}/>
@@ -79,7 +82,24 @@ function App() {
 
 function Home(){
   return(
-    <div>Welcome to Pharmacy Management System</div>
+    <><div>Welcome to Pharmacy Management System</div><div>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/home">Home</Link>
+          </li>
+          <li>
+            <Link to="/view">View Medications</Link>
+          </li>
+          <li>
+            <Link to="/add">Add Medication</Link>
+          </li>
+          <li>
+            <Link to="/update">Update Medicine</Link>
+          </li>
+        </ul>
+      </nav>
+    </div></>
   )
 }
 

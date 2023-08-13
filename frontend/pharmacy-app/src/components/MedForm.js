@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+// Add medicine details
 function MedForm({ addMedication }) {
   const [medicineName, setMedicineName] = useState('');
   const [dosageForm, setDosageForm] = useState('');
