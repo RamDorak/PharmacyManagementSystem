@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getMedication, updateMedication } from '../services/api';
 
-// Update Medication page
+// Update Medication page - displays list of medicines, user can choose which one to update
 function MedUpdate() {
   const { medicationId } = useParams();
   const navigate = useNavigate();
@@ -45,35 +45,6 @@ function MedUpdate() {
   };
 
   const handleUpdateMedication = async () => {
-    // const updatedFields= {};
-
-    // if (dosageForm !== medication.dosage_form) {
-    //   updatedFields.dosage_form = dosageForm;
-    // }
-    // if (concentration !== medication.concentration) {
-    //   updatedFields.concentration = concentration;
-    // }
-    // if (manufacturer !== medication.manufacturer) {
-    //   updatedFields.manufacturer = manufacturer;
-    // }
-    // if (expiration_date !== medication.expiration_date) {
-    //   updatedFields.expiration_date = expiration_date;
-    // }
-    // if (DIN !== medication.DIN) {
-    //   updatedFields.DIN = DIN;
-    // }
-    // if (quantity !== medication.quantity) {
-    //   updatedFields.quantity = quantity;
-    // }
-    // if (price !== medication.price) {
-    //   updatedFields.price = price;
-    // }
-    // if (prescription_status !== medication.prescription_status) {
-    //   updatedFields.prescription_status = prescription_status;
-    // }
-    // if (storage_conditions !== medication.storage_conditions) {
-    //   updatedFields.storage_conditions = storage_conditions;
-    // }
 
     const updatedMedicationData = {
       medicine_name: updatedMedicineName,

@@ -1,39 +1,9 @@
-// // components/MedUpdate.js
-
-// import React, { useState } from 'react';
-
-// function MedUpdate({ medicationId, onUpdate }) {
-//   const [updatedMedicineName, setUpdatedMedicineName] = useState('');
-
-//   const handleUpdate = () => {
-//     onUpdate(medicationId, { medicine_name: updatedMedicineName });
-//     setUpdatedMedicineName('');
-//   };
-
-//   return (
-//     <div>
-//       <h2>Update Medication</h2>
-//       <label>
-//         New Medicine Name:
-//         <input
-//           type="text"
-//           value={updatedMedicineName}
-//           onChange={(e) => setUpdatedMedicineName(e.target.value)}
-//         />
-//       </label>
-//       <button onClick={handleUpdate}>Update Medication</button>
-//     </div>
-//   );
-// }
-
-// export default MedUpdate;
-
-// components/UpdatePage.js
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getMedications } from '../services/api';
 
+// Particular medicine field updation
 function UpdatePage() {
   const [medications, setMedications] = useState([]);
   const [medicine_name, setMedicineName] = useState('');

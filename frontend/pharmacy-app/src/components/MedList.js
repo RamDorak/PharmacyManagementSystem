@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
-import { deleteMedication } from '../services/api'; // Import the deleteMedication function
-import {fetchMedications} from '../App';
+import React, { useState, useEffect } from 'react';
+import { deleteMedication, getMedications } from '../services/api'; // Import the deleteMedication and getMedications functions
 
-function MedList({ medications, fetchMedications }) {
-  const [medicine_name, setMedicineName] = useState('');
+function MedList() {
+  const [medications, setMedications] = useState([]);
+  
+  useEffect(() => {
+    fetchMedications();
+  }, []);
 
   const handleDelete = async (medicationId) => {
     const response = await deleteMedication(medicationId);
@@ -11,6 +14,12 @@ function MedList({ medications, fetchMedications }) {
       fetchMedications();
     }
   };
+
+  const fetchMedications = async () => {
+    const meds = await getMedications();
+    setMedications(meds.medications);
+  };
+
 
   return (
     <div>

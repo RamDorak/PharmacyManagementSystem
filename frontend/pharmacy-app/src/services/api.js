@@ -1,7 +1,8 @@
-const API_BASE_URL = 'http://localhost:5000'; // Update with your backend URL
 
-async function getMedications() {
-  const response = await fetch(`${API_BASE_URL}/medications`);
+const API_BASE_URL = 'http://localhost:5000';
+
+async function getMedications(pharmacyName) {
+  const response = await fetch(`${API_BASE_URL}/medications/${pharmacyName}`);
   return response.json();
 }
 
@@ -40,4 +41,4 @@ async function updateMedication(medicationId, updatedData) {
   return response.json();
 }
 
-export { getMedications, addMedication , deleteMedication, updateMedication, getMedication};
+export { getMedications, addMedication, deleteMedication, updateMedication, getMedication };

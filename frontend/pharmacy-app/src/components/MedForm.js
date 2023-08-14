@@ -94,7 +94,7 @@ function MedForm({ addMedication }) {
         <br/>
         <br/>
         <label> 
-          DIN:
+          Batch No:
           <input
             type="text"
             value={DIN}

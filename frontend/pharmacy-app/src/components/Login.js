@@ -3,6 +3,7 @@ import {Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import App from '../App';
 
+// Implement login functionality
 function Login({ updateLoginStatus  }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -17,11 +18,9 @@ function Login({ updateLoginStatus  }) {
       });
       
       if(response.status === 200){
-        navigate('/home');
         updateLoginStatus(true);
       }
 
-      // Handle successful login response here
       console.log('Login Successful', response.data);
     }
     catch (error) {

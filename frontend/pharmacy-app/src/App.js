@@ -3,8 +3,8 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import MedList from './components/MedList';
 import MedForm from './components/MedForm';
-import UpdatePage from './components/UpdatePage';
 import MedUpdate from './components/MedUpdate';
+import UpdatePage from './components/UpdatePage';
 import Login from './components/Login';
 import { getMedications, addMedication, deleteMedication , updateMedication } from './services/api';
 
@@ -54,15 +54,10 @@ function App() {
         <Login updateLoginStatus={updateLoginStatus}/> }
         <Routes>
           <Route path="/" component={<Login />}/> 
-          {/* <Route path="/home" element={<Home/>}/> */}
-          <Route
-            path="/view"
-            element={<MedList medications={medications} onDelete={handleDeleteMedication} />}/>
-          <Route path="/add" element={<MedForm addMedication={handleAddMedication} />} /> {/* Add Medication page */}
-          <Route
-            path="/update"
-            element={<UpdatePage onUpdate={handleUpdateMedication} />}
-          />
+          <Route path="/home" element={<Home/>}/>
+          <Route path="/view" element={<MedList medications={medications} onDelete={handleDeleteMedication} />}/>
+          <Route path="/add" element={<MedForm addMedication={handleAddMedication} />} />
+          <Route path="/update" element={<UpdatePage onUpdate={handleUpdateMedication} />}/>
           <Route path="/update/:medicationId" element={<MedUpdate />} />
         </Routes>
       </div>
