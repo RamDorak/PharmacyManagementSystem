@@ -28,6 +28,8 @@ function MedList() {
         {medications.map((medication) => (
           <li key={medication.medication_id}>
             {medication.medicine_name}
+            {medication.DIN}<br></br>
+            {medication.expiration_date}
             <button onClick={() => handleDelete(medication.medication_id)}>Delete</button>
           </li>
         ))}

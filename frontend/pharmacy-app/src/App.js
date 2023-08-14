@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import MedList from './components/MedList';
 import MedForm from './components/MedForm';
 import MedUpdate from './components/MedUpdate';
@@ -54,6 +55,7 @@ function App() {
         <Login updateLoginStatus={updateLoginStatus}/> }
         <Routes>
           <Route path="/" component={<Login />}/> 
+          <Route path= "/login" component = {<Login />}/>
           <Route path="/home" element={<Home/>}/>
           <Route path="/view" element={<MedList medications={medications} onDelete={handleDeleteMedication} />}/>
           <Route path="/add" element={<MedForm addMedication={handleAddMedication} />} />
@@ -66,6 +68,13 @@ function App() {
 }
 
 function Home(){
+  const navigate = useNavigate();
+
+  const handleLogout = () =>{
+    navigate('/');
+    window.location.reload();
+  }
+
   return(
     <><div>Welcome to Pharmacy Management System</div><div>
       <nav>
@@ -83,6 +92,7 @@ function Home(){
             <Link to="/update">Update Medicine</Link>
           </li>
         </ul>
+        <button onClick={handleLogout}>Logout</button>
       </nav>
     </div></>
   )

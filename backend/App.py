@@ -8,7 +8,6 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:' + quote_plus('Ping@5858') + '@localhost/ramdb'
 db = SQLAlchemy(app)
 
-
 CORS(app, origins='http://localhost:3000', methods=['GET', 'POST', 'PUT', 'DELETE'], allow_headers=['Content-Type'])
 
 class users(db.Model):
@@ -17,6 +16,7 @@ class users(db.Model):
     password = db.Column(db.String(255), nullable=False)
     pharmacy_name = db.Column(db.String(50), nullable=False)
 
+# Pharmacy tables depicting 3 different pharmacies
 class pharmacy1(db.Model):
     medication_id = db.Column(db.Integer, primary_key=True)
     medicine_name = db.Column(db.String(255))
