@@ -128,11 +128,10 @@ def login():
         pharmacy_name = User.pharmacy_name
         print("User found, Pharmacy name", pharmacy_name)
         # Dynamically choose the appropriate class based on pharmacy_name
-        # pharmacy_class = globals()[pharmacy_name]
+        global pharmacy_class
         pharmacy_class= pharmacy_classes.get(pharmacy_name)
         print(pharmacy_class)
         # Now you can use the medication_class to interact with the specific pharmacy table
-        # ...
         medication= pharmacy_class.query.all()
         serialized_medications = [med.serialize() for med in medication]
         response = jsonify(medications=serialized_medications)
@@ -149,9 +148,12 @@ def hello():
 @app.route('/medications/<string:pharmacy_name>', methods=['GET'])
 def get_medications(pharmacy_name):
     medication = pharmacy_class.query.all()
+    print(pharmacy_class)
     serialized_medications = [med.serialize() for med in medication]
     response = jsonify(medications=serialized_medications)
-    response.headers.add('Access-Control-Allow-Origin', '*')  # Allow requests from all origins
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    global pc
+    pc = pharmacy_class
     return response
 
 @app.route('/medications', methods=['POST'])

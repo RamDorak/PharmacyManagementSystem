@@ -22,7 +22,6 @@ async function addMedication(medicationData) {
   return response.json();
 }
 
-// Add more API functions for update and delete
 async function deleteMedication(medicationId) {
   const response = await fetch(`${API_BASE_URL}/medications/${medicationId}`, {
     method: 'DELETE',
