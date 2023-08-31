@@ -2,7 +2,8 @@
 from urllib.parse import quote_plus
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
+from flask import send_file
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:' + quote_plus('Ping@5858') + '@localhost/ramdb'
@@ -15,6 +16,7 @@ class users(db.Model):
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     pharmacy_name = db.Column(db.String(50), nullable=False)
+    role = db.Column(db.String(50), nullable = False)
 
 # Pharmacy tables depicting 3 different pharmacies
 class pharmacy1(db.Model):
@@ -107,53 +109,52 @@ pharmacy_classes= {
     'pharmacy3': pharmacy3
 }     
 
-pharmacy_class= pharmacy_classes['pharmacy1']
+# pharmacy_class = pharmacy_classes['pharmacy1']
 
-# @app.route('/login', methods=['OPTIONS'])
-# def options():
-#     response = jsonify(message='CORS OK')
-#     response.headers.add('Access-Control-Allow-Origin', '*')
-#     response.headers.add('Access-Control-Allow-Headers', '*')
-#     response.headers.add('Access-Control-Allow-Methods', '*')
-#     return response
-
-@app.route('/login', methods=['POST'])        
+@app.route('/login', methods=['POST'])   
 def login():
     data= request.json
     username= data['username']
     password= data['password']
-    
     User = users.query.filter_by(username= username, password= password).first()
+    global pharmacy_name
+    global pharmacy_class
     if User:
         pharmacy_name = User.pharmacy_name
-        print("User found, Pharmacy name", pharmacy_name)
-        # Dynamically choose the appropriate class based on pharmacy_name
-        global pharmacy_class
-        pharmacy_class= pharmacy_classes.get(pharmacy_name)
-        print(pharmacy_class)
-        # Now you can use the medication_class to interact with the specific pharmacy table
-        medication= pharmacy_class.query.all()
-        serialized_medications = [med.serialize() for med in medication]
-        response = jsonify(medications=serialized_medications)
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        return response
+        pharmacy_class = pharmacy_classes['pharmacy1']
+        if User.role == 'Admin':
+            response = jsonify(message = 'Admin has logged in', role = "Admin")
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            return response
+        else:
+            print("User found, Pharmacy name", pharmacy_name)
+            medication= pharmacy_class.query.all()
+            serialized_medications = [med.serialize() for med in medication]
+            response = jsonify(medications=serialized_medications, role = "Pharmacist", pharmacy= pharmacy_name)
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            return response
     else:
+        response = jsonify(message = "Invalid login")
         response.headers.add('Access-Control-Allow-Origin', '*')
         return jsonify(message='Login unsuccessful'), 401
     
 @app.route('/')
 def hello():
-    return 'Hello this is backend! \n Route to ''/medications'' if you want to see the medications data'
+    return 'Hello this is backend! \n Route to ''/medications/{pharmacy_name}'' if you want to see the medications data'
 
 @app.route('/medications/<string:pharmacy_name>', methods=['GET'])
 def get_medications(pharmacy_name):
+    pharmacy_class = pharmacy_classes['pharmacy1']
+    if (pharmacy_name == 'pharmacy1'):
+        pharmacy_class = pharmacy_classes.get('pharmacy1')
+    elif (pharmacy_name == 'pharmacy2'):
+        pharmacy_class = pharmacy_classes.get('pharmacy2')
+    elif (pharmacy_name == 'pharmacy3'):
+        pharmacy_class = pharmacy_classes.get('pharmacy3')
     medication = pharmacy_class.query.all()
-    print(pharmacy_class)
     serialized_medications = [med.serialize() for med in medication]
     response = jsonify(medications=serialized_medications)
     response.headers.add('Access-Control-Allow-Origin', '*')
-    global pc
-    pc = pharmacy_class
     return response
 
 @app.route('/medications', methods=['POST'])
@@ -164,14 +165,16 @@ def create_medication():
     db.session.commit()
     return jsonify(message='Medication created successfully')
 
-@app.route('/medications/<int:medication_id>', methods=['GET'])
-def get_medication(medication_id):
+@app.route('/medications/<string:pharmacy_name>/<int:medication_id>', methods=['GET'])
+def get_medication(pharmacy_name, medication_id):
+    pharmacy_class = pharmacy_classes[pharmacy_name]
+    print(pharmacy_class)
     medication = pharmacy_class.query.get(medication_id)
     if medication:
         return jsonify(medication.serialize())
     else:
         return jsonify(error='Medication not found'), 404
-
+    
 @app.route('/medications/<int:medication_id>', methods=['PUT'])
 def update_medication(medication_id):
     medication = pharmacy_class.query.get(medication_id)
@@ -193,6 +196,6 @@ def delete_medication(medication_id):
         return jsonify(message='Medication deleted successfully')
     else:
         return jsonify(error='Medication not found'), 404
-
+    
 if __name__ == '__main__':
     app.run(debug=True)

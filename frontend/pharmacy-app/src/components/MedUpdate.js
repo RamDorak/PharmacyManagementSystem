@@ -2,8 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getMedication, updateMedication } from '../services/api';
+import { useStateContext } from './StateContext';
 
 function MedUpdate() {
+  const { state } = useStateContext();
   const { medicationId } = useParams();
   const [medication, setMedication] = useState(null);
   const [selectedField, setSelectedField] = useState('');
@@ -11,8 +13,9 @@ function MedUpdate() {
 
   useEffect(() => {
     async function fetchMedication() {
-      const med = await getMedication(medicationId);
+      const med = await getMedication(state.pharmacyName, medicationId);
       setMedication(med);
+      console.log(med)
     }
     fetchMedication();
   }, [medicationId]);
@@ -36,7 +39,7 @@ function MedUpdate() {
   };
 
   const fieldOptions = [
-    'medicine_name', 'generic_name', 'dosage_form', 'concentration',
+    'medicine_name', 'dosage_form', 'concentration',
     'manufacturer', 'DIN', 'expiration_date', 'quantity', 'price',
     'prescription_status', 'storage_conditions'
   ];

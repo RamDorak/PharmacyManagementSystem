@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { deleteMedication, getMedications } from '../services/api'; // Import the deleteMedication and getMedications functions
+import { useStateContext } from './StateContext';
 
 function MedList() {
   const [medications, setMedications] = useState([]);
+  const { state } = useStateContext();
   
   useEffect(() => {
     fetchMedications();
@@ -16,10 +19,9 @@ function MedList() {
   };
 
   const fetchMedications = async () => {
-    const meds = await getMedications();
+    const meds = await getMedications(state.pharmacyName);
     setMedications(meds.medications);
   };
-
 
   return (
     <div>
@@ -27,10 +29,31 @@ function MedList() {
       <ul>
         {medications.map((medication) => (
           <li key={medication.medication_id}>
-            {medication.medicine_name}
-            {medication.DIN}<br></br>
-            {medication.expiration_date}
-            <button onClick={() => handleDelete(medication.medication_id)}>Delete</button>
+            <table border="1" className='ViewTable'>
+              <tr>
+                <td>Medicine Name</td>
+                <td>Batch No</td>
+                <td>Exp. Date</td>
+                <td>Conc.</td>
+                <td>Manufacturer</td>
+                <td>Quantity</td>
+                <td>Price</td>
+                <td>Prsc. Status</td>
+                <td>Storage Cond.</td>
+              </tr>
+            <tr>
+                <td>{medication.medicine_name}</td>
+                <td>{medication.DIN}</td>
+                <td>{medication.expiration_date}</td>
+                <td>{medication.concentration}</td>
+                <td>{medication.manufacturer}</td>
+                <td>{medication.quantity}</td>
+                <td>{medication.price}</td>
+                <td>{medication.prescription_status}</td>
+                <td>{medication.storage_conditions}</td>
+                <td><button onClick={() => handleDelete(medication.medication_id)}>Delete</button></td>
+            </tr>
+            </table>
           </li>
         ))}
       </ul>

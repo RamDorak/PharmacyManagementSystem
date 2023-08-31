@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import {Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import App from '../App';
+import { useStateContext } from './StateContext';
 
 // Implement login functionality
 function Login({ updateLoginStatus  }) {
+  const { state, setState } = useStateContext();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [ isLoggedIn, setIsLoggedIn ] = useState(false);
@@ -16,11 +18,20 @@ function Login({ updateLoginStatus  }) {
         username: username,
         password: password
       });
+
+      if(response.data.role === 'Admin'){
+        navigate('/admin-dashboard')
+      }
       
       if(response.status === 200){
         updateLoginStatus(true);
+        const rolep = response.data.role
+        const pharmacyName = response.data.pharmacyName
+        setState({pharmacyName: pharmacyName})
+        setState({role: rolep})
+        console.log(rolep)
+        console.log(pharmacyName)
       }
-
       console.log('Login Successful', response.data);
     }
     catch (error) {

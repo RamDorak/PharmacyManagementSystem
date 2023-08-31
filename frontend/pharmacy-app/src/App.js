@@ -8,6 +8,8 @@ import MedUpdate from './components/MedUpdate';
 import UpdatePage from './components/UpdatePage';
 import Login from './components/Login';
 import { getMedications, addMedication, deleteMedication , updateMedication } from './services/api';
+import AdminDashboard from './components/AdminDashboard';
+import { useStateContext } from './components/StateContext';
 
 function App() {
   const [medications, setMedications] = useState([]);
@@ -54,13 +56,14 @@ function App() {
         { isLoggedIn ? <Home /> :
         <Login updateLoginStatus={updateLoginStatus}/> }
         <Routes>
-          <Route path="/" component={<Login />}/> 
+          {/* <Route path="/" element={<Home />}/>    */}
           <Route path= "/login" component = {<Login />}/>
           <Route path="/home" element={<Home/>}/>
           <Route path="/view" element={<MedList medications={medications} onDelete={handleDeleteMedication} />}/>
           <Route path="/add" element={<MedForm addMedication={handleAddMedication} />} />
           <Route path="/update" element={<UpdatePage onUpdate={handleUpdateMedication} />}/>
           <Route path="/update/:medicationId" element={<MedUpdate />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />}/>
         </Routes>
       </div>
     </Router>
@@ -69,14 +72,24 @@ function App() {
 
 function Home(){
   const navigate = useNavigate();
-
+  const { state } = useStateContext();
+  console.log(state.pharmacyName);
+  console.log(state.role);
   const handleLogout = () =>{
     navigate('/');
     window.location.reload();
   }
 
+  const handleBack = () =>{
+    navigate(-1);
+  }
+
+  const handleSelectPharmacy = () =>{
+    navigate('/admin-dashboard');
+  }
+
   return(
-    <><div>Welcome to Pharmacy Management System</div><div>
+    <><div>Welcome to Pharmacy Management System, {state.role}</div><div>
       <nav>
         <ul>
           <li>
@@ -93,6 +106,8 @@ function Home(){
           </li>
         </ul>
         <button onClick={handleLogout}>Logout</button>
+        <button onClick= { handleBack }>Back</button>
+        {state.role === 'Admin' && <button onClick={handleSelectPharmacy}>Select Other Pharmacy</button>}
       </nav>
     </div></>
   )

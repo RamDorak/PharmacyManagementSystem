@@ -2,9 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getMedications } from '../services/api';
+import { useStateContext } from './StateContext';
 
 // Particular medicine field updation
 function UpdatePage() {
+  const { state } = useStateContext();
   const [medications, setMedications] = useState([]);
   const [medicine_name, setMedicineName] = useState('');
 
@@ -13,7 +15,8 @@ function UpdatePage() {
   }, []);
 
   const fetchMedications = async () => {
-    const medicationsData = await getMedications();
+    const medicationsData = await getMedications(state.pharmacyName);
+    console.log(medicationsData)
     setMedications(medicationsData.medications);
   };
 

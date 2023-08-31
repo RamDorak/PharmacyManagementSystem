@@ -6,8 +6,8 @@ async function getMedications(pharmacyName) {
   return response.json();
 }
 
-async function getMedication(medicationId) {
-  const response = await fetch(`${API_BASE_URL}/medications/${medicationId}`);
+async function getMedication(pharmacyName, medicationId) {
+  const response = await fetch(`${API_BASE_URL}/medications/${pharmacyName}/${medicationId}`);
   return response.json();
 }
 
