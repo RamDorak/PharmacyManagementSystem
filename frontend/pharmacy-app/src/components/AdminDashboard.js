@@ -16,7 +16,7 @@ function AdminDashboard() {
   }, [selectedPharmacy]);
 
   const handleSelectPharmacy = (e) => {
-    const selectedPharmacy = e.target.value;
+    const selectedPharmacy = e.value;
     setSelectedPharmacy(selectedPharmacy);
     setState({ ...state, pharmacyName: e.target.value , role: 'Admin'})
     fetchMedications();

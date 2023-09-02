@@ -5,7 +5,8 @@ const StateContext = createContext();
 
 export function StateProvider({ children }) {
   const [state, setState] = useState({
-    role: 'Pharmacist',
+    role: '',
+    pharmacy: ''
   });
   
   return (

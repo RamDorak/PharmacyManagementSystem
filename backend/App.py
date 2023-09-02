@@ -1,4 +1,3 @@
-
 from urllib.parse import quote_plus
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -109,8 +108,6 @@ pharmacy_classes= {
     'pharmacy3': pharmacy3
 }     
 
-# pharmacy_class = pharmacy_classes['pharmacy1']
-
 @app.route('/login', methods=['POST'])   
 def login():
     data= request.json
@@ -121,7 +118,7 @@ def login():
     global pharmacy_class
     if User:
         pharmacy_name = User.pharmacy_name
-        pharmacy_class = pharmacy_classes['pharmacy1']
+        pharmacy_class = pharmacy_classes[pharmacy_name]
         if User.role == 'Admin':
             response = jsonify(message = 'Admin has logged in', role = "Admin")
             response.headers.add('Access-Control-Allow-Origin', '*')
@@ -144,6 +141,8 @@ def hello():
 
 @app.route('/medications/<string:pharmacy_name>', methods=['GET'])
 def get_medications(pharmacy_name):
+    print("get_medications function")
+    global pharmacy_class
     pharmacy_class = pharmacy_classes['pharmacy1']
     if (pharmacy_name == 'pharmacy1'):
         pharmacy_class = pharmacy_classes.get('pharmacy1')
@@ -168,13 +167,36 @@ def create_medication():
 @app.route('/medications/<string:pharmacy_name>/<int:medication_id>', methods=['GET'])
 def get_medication(pharmacy_name, medication_id):
     pharmacy_class = pharmacy_classes[pharmacy_name]
-    print(pharmacy_class)
+    print("get_medication function")
     medication = pharmacy_class.query.get(medication_id)
     if medication:
         return jsonify(medication.serialize())
     else:
         return jsonify(error='Medication not found'), 404
     
+@app.route('/sell-medicines', methods=['POST'])
+def sell_medicines():
+    try:
+        sold_data = request.json
+        for item in sold_data:
+            pharmacy_name = item['pharmacyName']
+            medication_id = item['medication_id']
+            quantity_sold = item['quantity']
+            pharmacy_class = pharmacy_classes[pharmacy_name]
+            medication = pharmacy_class.query.get(medication_id)
+            if medication:
+                if medication.quantity >= int(quantity_sold):
+                    medication.quantity -= int(quantity_sold)
+                    print(medication.quantity)
+                else:
+                    return jsonify(error='Not enough quantity available'), 400
+            else:
+                return jsonify(error=f'Medication with ID {medication_id} not found'), 404
+        db.session.commit()
+        return jsonify(message='Medications marked as sold successfully')
+    except Exception as e:
+        return jsonify(error=str(e)), 500
+
 @app.route('/medications/<int:medication_id>', methods=['PUT'])
 def update_medication(medication_id):
     medication = pharmacy_class.query.get(medication_id)
@@ -196,6 +218,7 @@ def delete_medication(medication_id):
         return jsonify(message='Medication deleted successfully')
     else:
         return jsonify(error='Medication not found'), 404
+    
     
 if __name__ == '__main__':
     app.run(debug=True)

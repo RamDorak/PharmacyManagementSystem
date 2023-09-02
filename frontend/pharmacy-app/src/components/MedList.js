@@ -19,7 +19,7 @@ function MedList() {
   };
 
   const fetchMedications = async () => {
-    const meds = await getMedications(state.pharmacyName);
+    const meds = await getMedications(state.pharmacy);
     setMedications(meds.medications);
   };
 

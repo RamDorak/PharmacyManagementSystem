@@ -26,11 +26,10 @@ function Login({ updateLoginStatus  }) {
       if(response.status === 200){
         updateLoginStatus(true);
         const rolep = response.data.role
-        const pharmacyName = response.data.pharmacyName
-        setState({pharmacyName: pharmacyName})
-        setState({role: rolep})
-        console.log(rolep)
+        const pharmacyName = response.data.pharmacy
+        setState({pharmacy: pharmacyName, role: rolep});
         console.log(pharmacyName)
+        console.log(rolep)
       }
       console.log('Login Successful', response.data);
     }
