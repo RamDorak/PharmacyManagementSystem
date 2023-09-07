@@ -15,6 +15,7 @@ function UpdatePage() {
   }, []);
 
   const fetchMedications = async () => {
+    console.log("Update Page: " + state.pharmacy)
     const medicationsData = await getMedications(state.pharmacy);
     console.log(medicationsData)
     setMedications(medicationsData.medications);

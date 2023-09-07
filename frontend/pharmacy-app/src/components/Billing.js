@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useStateContext } from './StateContext';
+import PdfDocument from './PdfDocument';
+import { pdf } from '@react-pdf/renderer';
 
 function Billing() {
   const [selectedMedicines, setSelectedMedicines] = useState([]);
   const [quantities, setQuantities] = useState({});
   const [totalCost, setTotalCost] = useState(0);
   const [medications, setMedications] = useState([]);
+  const [ custName, setCustName ] = useState("");
   const { state } = useStateContext();
   const [selectedPharmacy, setSelectedPharmacy] = useState(state.pharmacy);
 
@@ -46,6 +49,17 @@ function Billing() {
     setSelectedMedicines(updatedSelectedMedicines);
   };
 
+  const handleDownloadPDF = async () => {
+    console.log("Selected Medicines "+selectedMedicines);
+    const blob = await pdf(<PdfDocument selectedMedicines={selectedMedicines} quantities={quantities} totalCost={totalCost} custName={custName} />).toBlob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'invoice.pdf';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+  
   const handleMarkAsSold = async () => {
     const soldData = selectedMedicines.map((med) => ({
       pharmacyName: state.pharmacy,
@@ -55,7 +69,6 @@ function Billing() {
 
     try {
       await axios.post('http://localhost:5000/sell-medicines', soldData);
-      console.log("its not");
       setSelectedMedicines([]);
       setQuantities({});
       setTotalCost(0);
@@ -69,6 +82,15 @@ function Billing() {
     <div>
       <div>
         <h2>Sell Medicines</h2>
+      </div>
+      <div>
+      <input
+        type="Name"
+        placeholder="Customer Name"
+        value={custName}
+        onChange={(e) => setCustName(e.target.value)}
+      />
+      <button>Set Bill</button>
       </div>
       <div>
         <h3>Medicines List</h3>
@@ -100,7 +122,9 @@ function Billing() {
       </div>
       <div>
         <h3>Total Cost: Rs. {totalCost}</h3>
-        <button onClick={handleMarkAsSold}>Mark as Sold</button>
+        <button onClick={ handleMarkAsSold }>Mark as Sold</button>
+        <br></br>
+        <button onClick = { handleDownloadPDF }>Download Invoice</button>
       </div>
     </div>
   );

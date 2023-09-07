@@ -55,10 +55,9 @@ function App() {
     <Router>
       <div className="App">
         <h1>Pharmacy Management System</h1>
-        { isLoggedIn ? <Home /> :
+        { isLoggedIn ? < Home /> :
         <Login updateLoginStatus={updateLoginStatus}/> }
         <Routes>
-          {/* <Route path="/" element={<Home />}/>    */}
           <Route path= "/login" component = {<Login />}/>
           <Route path="/home" element={<Home/>}/>
           <Route path="/view" element={<MedList medications={medications} onDelete={handleDeleteMedication} />}/>
