@@ -1,0 +1,22 @@
+h2{
+    font-family: sans-serif;
+}
+.show-button{
+    font-family: sans-serif;
+    padding: 10px;
+    font-family: sans-serif;
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.options-button{
+    width: 370px;
+    margin: 20px auto 0;
+}
+
+.label{
+    font-family: sans-serif;
+}

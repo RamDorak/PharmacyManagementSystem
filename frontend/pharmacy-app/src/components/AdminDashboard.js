@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useStateContext } from './StateContext';
+import '../styles/AdminDashboard.css';
 
 function AdminDashboard() {
   const { state, setState } = useStateContext();
@@ -42,14 +43,14 @@ function AdminDashboard() {
     <div>
       <h2>Admin Dashboard</h2>
       <div>
-        <label>Select Pharmacy: </label>
-        <select value={selectedPharmacy} onChange={handleSelectPharmacy}>
+        <label className='label'>Select Pharmacy: </label>
+        <select value={selectedPharmacy} onChange={handleSelectPharmacy} className='options-button'>
           <option value="pharmacy1">Pharmacy 1</option>
           <option value="pharmacy2">Pharmacy 2</option>
           <option value="pharmacy3">Pharmacy 3</option>
         </select>
       </div>
-      <button onClick={() => navigate('/home')}>Show Medications</button>
+      <button className='show-button' onClick={() => navigate('/home')}>Show Medications</button>
     </div>
   );
 }

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import {Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
-import App from '../App';
 import { useStateContext } from './StateContext';
+import '../styles/Login.css';
+import Swal from 'sweetalert2';
 
 // Implement login functionality
 function Login({ updateLoginStatus  }) {
@@ -19,21 +20,36 @@ function Login({ updateLoginStatus  }) {
         password: password
       });
 
-      if(response.data.role === 'Admin'){
-        navigate('/admin-dashboard')
-      }
-      
       if(response.status === 200){
-        updateLoginStatus(true);
-        const rolep = response.data.role
-        const pharmacyName = response.data.pharmacy
-        setState({pharmacy: pharmacyName, role: rolep});
-        console.log(pharmacyName)
-        console.log(rolep)
-      }
+        Swal.fire (
+          'Welcome',
+          '',
+          'success'
+          )
+          updateLoginStatus(true);
+          const rolep = response.data.role
+          const pharmacyName = response.data.pharmacy
+          setState({pharmacy: pharmacyName, role: rolep});
+          console.log(pharmacyName)
+          console.log(rolep)
+        }
+
+        if(response.data.role === 'Admin'){
+          navigate('/admin-dashboard')
+          Swal.fire (
+            'Welcome Admin',
+            '',
+            'success'
+          )
+        }
       console.log('Login Successful', response.data);
     }
     catch (error) {
+      Swal.fire (
+        'Invalid username or password',
+        '',
+        'error'
+      )
         if (error.response && error.response.status === 401) {
           setLoginError('Invalid username or password');
         } else {
@@ -47,21 +63,25 @@ function setLoginError(error){
 }
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className='login-container'>
+      <h2 className='login-heading'>Login</h2>
       <input
+        className='login-input'
         type="text"
         placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
+      <br/>
       <input
+        className='login-input'
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={handleLogin}>Login</button>
+      <br/>
+      <button className='login-button' onClick={handleLogin}>Login</button>
     </div>
   );
 }
