@@ -50,7 +50,7 @@ function AdminDashboard() {
           <option value="pharmacy3">Pharmacy 3</option>
         </select>
       </div>
-      <button className='show-button' onClick={() => navigate('/home')}>Show Medications</button>
+      <button className='show-button' onClick={() => navigate('/')}>Show Medications</button>
     </div>
   );
 }

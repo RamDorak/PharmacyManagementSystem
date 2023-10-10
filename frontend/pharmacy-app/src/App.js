@@ -16,6 +16,7 @@ import Billing from './components/Billing';
 function App() {
   const [medications, setMedications] = useState([]);
   const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+  const { state } = useStateContext();
 
   const updateLoginStatus = (status) => {
     setIsLoggedIn(status);
@@ -26,7 +27,7 @@ function App() {
   }, []);
 
   const fetchMedications = async () => {
-    const medicationsData = await getMedications();
+    const medicationsData = await getMedications(state.pharmacy);
     setMedications(medicationsData.medications);
   };
 

@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
   customerName: {
     fontSize: 12,
     marginBottom: 10,
+    marginLeft: 2,
   },
   itemList: {
     fontSize: 16,
@@ -45,6 +46,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'right',
     marginTop: 10,
+    marginBottom: 10,
+    marginRight: 2,
   },
   totalAmount: {
     fontSize: 16,
