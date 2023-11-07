@@ -42,12 +42,18 @@ function Home(){
                 <Link to = "/billing">Billing</Link>
               </li>
               <li className="navbar-item a">
+                <Link to = "/customer-data">Customer Data</Link>
+              </li>
+              <li className="navbar-item a">
                 {state.role === 'Admin' && <button className="pharmacy-select" onClick={handleSelectPharmacy}>Select Pharmacy</button>}
               </li>
               <li className="navbar-item a">
               <button className="logout-button" onClick={handleLogout}>Logout</button>
               </li>
             </ul>
+            <div className="footer">
+              Project by Batch 1 Group 2
+            </div>
           </div>
         </nav>
       </div></>

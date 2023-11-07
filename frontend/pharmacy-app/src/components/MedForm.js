@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../styles/MedForm.css';
 
 // Add medicine details
 function MedForm({ addMedication }) {
@@ -40,7 +41,7 @@ function MedForm({ addMedication }) {
   };
 
   return (
-    <div>
+    <div className='AddMedicationForm'>
       <h2>Add Medication</h2>
       <form onSubmit={handleSubmit}>
         <label>

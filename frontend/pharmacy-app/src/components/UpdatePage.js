@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getMedications } from '../services/api';
 import { useStateContext } from './StateContext';
+import '../styles/UpdatePage.css';
 
 // Particular medicine field updation
 function UpdatePage() {
@@ -22,7 +23,7 @@ function UpdatePage() {
   };
 
   return (
-    <div>
+    <div className='UpdatePage'>
       <h2>Update Medication Page</h2>
       <ul>
         {medications.map((medication) => (

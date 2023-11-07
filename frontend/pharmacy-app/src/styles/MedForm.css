@@ -1,0 +1,45 @@
+/* MedForm.css */
+.AddMedicationForm {
+    background-color: #f2f2f2;
+    padding: 5px;
+    border-radius: 8px;
+  }
+  
+  .AddMedicationForm h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .AddMedicationForm form {
+    display: grid;
+    gap: 5px;
+  }
+  
+  .AddMedicationForm label {
+    font-weight: bold;
+    display: block;
+  }
+  
+  .AddMedicationForm input[type="text"],
+  .AddMedicationForm input[type="date"] {
+    width: 50%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .AddMedicationForm button {
+    background-color: rgb(255, 0, 0);
+    color: white;
+    border: none;
+    font-size: medium;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 28px;
+  }
+  
+  .AddMedicationForm button:hover {
+    background-color: #b30000;
+  }

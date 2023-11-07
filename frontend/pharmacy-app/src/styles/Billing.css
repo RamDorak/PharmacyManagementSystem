@@ -1,0 +1,81 @@
+/* Billing Page Container */
+.billing-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 10px;
+    margin-top: 4px;
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Header Styles */
+  .billing-header {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Customer Information Section */
+  .customer-info {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  
+  .customer-info label {
+    font-weight: bold;
+  }
+  
+  /* Medicines List Styles */
+  .medicines-list {
+    list-style: none;
+    padding: 2px;
+  }
+  
+  .medicines-list li {
+    margin-bottom: 10px;
+  }
+  
+  /* Selected Medicines Styles */
+  .selected-medicines {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .selected-medicines ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  /* Total Cost Styles */
+  .total-cost {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .mark-sold-button {
+    border-radius: 4px;
+    padding: 6px;
+  }
+
+  .set-bill-button {
+    border-radius: 4px;
+    padding: 6px;
+    margin-left: 4px;
+  }
+
+  .remove-button {
+    border-radius: 4px;
+    padding: 6px;
+  }
+
+  .sell-button {
+    border-radius: 4px;
+    padding: 6px;
+  }

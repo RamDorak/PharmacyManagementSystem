@@ -19,13 +19,14 @@ function AdminDashboard() {
   const handleSelectPharmacy = (e) => {
     const selectedPharmacy = e.target.value;
     setSelectedPharmacy(selectedPharmacy);
-    setState({ ...state, pharmacyName: e.target.value , role: 'Admin'})
+    console.log("selected pharmacy",e.target.value);
+    setState({ ...state, pharmacyName: selectedPharmacy , role: 'Admin'})
     fetchMedications();
   }
 
   const fetchMedications = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/medications/${selectedPharmacy}`);
+      const response = await axios.get(`http://127.0.0.1:5000/medications/${selectedPharmacy}`);
       console.log(response.data);
       console.log("Selected pharmacy:"+ selectedPharmacy);
       setState({...state, pharmacy: selectedPharmacy})

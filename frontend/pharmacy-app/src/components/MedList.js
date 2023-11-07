@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import '../styles/MedList.css';
 import { deleteMedication, getMedications } from '../services/api'; // Import the deleteMedication and getMedications functions
 import { useStateContext } from './StateContext';
 

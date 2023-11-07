@@ -1,0 +1,41 @@
+/* Add this CSS to your component's CSS file or a separate CSS file */
+
+/* Style for the Customer Data component container */
+.customer-data-container {
+    margin: 20px;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* Style for the table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid #007BFF;
+  }
+  
+  /* Style for table header */
+  th {
+    background-color: #007BFF;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  /* Style for table rows */
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  /* Style for table data cells */
+  td {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  /* Style for table row hover effect */
+  tr:hover {
+    background-color: #B0C4DE;
+  }
+  

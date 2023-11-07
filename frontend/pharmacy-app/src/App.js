@@ -1,7 +1,6 @@
 import './styles/App.css';
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 import { getMedications, addMedication, deleteMedication , updateMedication } from './services/api';
 import { useStateContext } from './components/StateContext';
 import MedList from './components/MedList';
@@ -12,6 +11,7 @@ import Login from './components/Login';
 import Home from './components/Home';
 import AdminDashboard from './components/AdminDashboard';
 import Billing from './components/Billing';
+import CustomerData from './components/CustomerData';
 
 function App() {
   const [medications, setMedications] = useState([]);
@@ -27,7 +27,7 @@ function App() {
   }, []);
 
   const fetchMedications = async () => {
-    const medicationsData = await getMedications(state.pharmacy);
+    const medicationsData = await getMedications('pharmacy1');
     setMedications(medicationsData.medications);
   };
 
@@ -69,6 +69,7 @@ function App() {
           <Route path="/update/:medicationId" element={<MedUpdate />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />}/>
           <Route path="/billing" element={<Billing/>}/>
+          <Route path='/customer-data' element={<CustomerData/>}/>
         </Routes>
       </div>
     </Router>

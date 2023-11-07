@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useStateContext } from './StateContext';
-import PdfDocument from './PdfDocument';
-import { pdf } from '@react-pdf/renderer';
+import Swal from 'sweetalert2';
+import '../styles/Billing.css';
 
 function Billing() {
   const [selectedMedicines, setSelectedMedicines] = useState([]);
@@ -10,10 +10,12 @@ function Billing() {
   const [totalCost, setTotalCost] = useState(0);
   const [medications, setMedications] = useState([]);
   const [ custName, setCustName ] = useState("");
+  const [phno, setPhNo] = useState();
   const { state } = useStateContext();
   const [selectedPharmacy, setSelectedPharmacy] = useState(state.pharmacy);
 
   useEffect(() => {
+    fetchMedications();
     let cost = 0;
     selectedMedicines.forEach((med) => {
       cost += med.price * (quantities[med.medication_id] || 0);
@@ -23,7 +25,7 @@ function Billing() {
 
   const fetchMedications = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/medications/${selectedPharmacy}`);
+      const response = await axios.get(`http://127.0.0.1:5000/medications/${state.pharmacy}`);
       console.log(response.data);
       if (response.status === 200) {
         console.log('Medication data Billing.js');
@@ -48,58 +50,79 @@ function Billing() {
     const updatedSelectedMedicines = selectedMedicines.filter((med) => med.medication_id !== medicationId);
     setSelectedMedicines(updatedSelectedMedicines);
   };
-
-  const handleDownloadPDF = async () => {
-    console.log("Selected Medicines "+selectedMedicines);
-    const blob = await pdf(<PdfDocument selectedMedicines={selectedMedicines} quantities={quantities} totalCost={totalCost} custName={custName} />).toBlob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'invoice.pdf';
-    a.click();
-    URL.revokeObjectURL(url);
-  };
   
-  const handleMarkAsSold = async () => {
-    const soldData = selectedMedicines.map((med) => ({
-      pharmacyName: state.pharmacy,
-      medication_id: med.medication_id,
-      quantity: quantities[med.medication_id] || 0,
-    }));
+  const handleSetName = async() => {
+    Swal.fire(
+      'Customer details set',
+      '',
+      'success'
+    )
+  }
 
+  const handleMarkAsSold = async () => {
+    
     try {
-      await axios.post('http://localhost:5000/sell-medicines', soldData);
+      const customerData = {
+        customerName: custName,
+        phno: phno,
+        totalCost: totalCost,
+        selectedMedicines: selectedMedicines.map((med) => med.medicine_name),
+        pharmacy: state.pharmacy
+      };
+      // Post customerData to backend
+      console.log("this is customer data", customerData);
+      await axios.post('http://127.0.0.1:5000/add-customer', customerData);
+
+      const soldData = selectedMedicines.map((med) => ({
+        pharmacyName: state.pharmacy,
+        medication_id: med.medication_id,
+        quantity: quantities[med.medication_id] || 0,
+      }));
+
+      await axios.post('http://127.0.0.1:5000/sell-medicines', soldData);
       setSelectedMedicines([]);
       setQuantities({});
       setTotalCost(0);
-      fetchMedications();
     } catch (error) {
       console.log('Error while marking as sold:', error);
     }
+    Swal.fire(
+      'Marked as sold',
+      '',
+      'success'
+    );
   };
 
   return (
-    <div>
-      <div>
+    <div className='billing-container'>
+      <div className='billing-header'>
         <h2>Sell Medicines</h2>
       </div>
-      <div>
-      <input
-        type="Name"
-        placeholder="Customer Name"
-        value={custName}
-        onChange={(e) => setCustName(e.target.value)}
-      />
-      <button>Set Bill</button>
+      <div className='customer-info'>
+        <input
+          className='customer-info'
+          type="Name"
+          placeholder="Customer Name"
+          value={custName}
+          onChange={(e) => setCustName(e.target.value)}
+        />
+        <input
+          className='customer-info'
+          type="Ph_No"
+          placeholder="Phone Number"
+          value={phno}
+          onChange={(e) => setPhNo(e.target.value)}
+        />
+        <button className='set-bill-button' onClick={handleSetName}>Set Customer Name</button>
       </div>
-      <div>
+      <div className='medicines-list'>
         <h3>Medicines List</h3>
         <ul>
           {medications.map((medication) => (
-            <li key={medication.medication_id}>
+            <li key={medication.medication_id} className='medicines-list'>
               {medication.medicine_name} - Price: Rs. {medication.price}
-              <button onClick={() => handleRemoveMedicine(medication.medication_id)}>Remove</button>
-              <button onClick={() => handleSellMedicine(medication)}>Sell</button>
+              <button className='remove-button' onClick={() => handleRemoveMedicine(medication.medication_id)}>Remove</button>
+              <button className='sell-button' onClick={() => handleSellMedicine(medication)}>Sell</button>
               <input
                 type="number"
                 placeholder="Quantity"
@@ -110,7 +133,7 @@ function Billing() {
           ))}
         </ul>
       </div>
-      <div>
+      <div className='selected-medicines'>
         <h3>Selected Medicines</h3>
         <ul>
           {selectedMedicines.map((medication) => (
@@ -120,13 +143,12 @@ function Billing() {
           ))}
         </ul>
       </div>
-      <div>
+      <div className='total-cost'>
         <h3>Total Cost: Rs. {totalCost}</h3>
-        <button onClick={ handleMarkAsSold }>Mark as Sold</button>
-        <br></br>
-        <button onClick = { handleDownloadPDF }>Download Invoice</button>
+        <button className='mark-sold-button' onClick={ handleMarkAsSold }>Mark as Sold</button>
       </div>
     </div>
   );
 }
+
 export default Billing;

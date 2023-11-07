@@ -5,10 +5,10 @@ from flask_cors import CORS, cross_origin
 from flask import send_file
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:' + quote_plus('Ping@5858') + '@localhost/ramdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:' + quote_plus('Pass@321') + '@localhost/ramdb'
 db = SQLAlchemy(app)
 
-CORS(app, origins='http://localhost:3000', methods=['GET', 'POST', 'PUT', 'DELETE'], allow_headers=['Content-Type'])
+CORS(app)
 
 class users(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
@@ -102,6 +102,20 @@ class pharmacy3(db.Model):
             'storage_conditions': self.storage_conditions
         }
         
+class customer(db.Model):
+    customer_id = db.Column(db.Integer, primary_key=True)
+    customer_name = db.Column(db.String(255), nullable=False)
+    phno = db.Column(db.String(50), nullable = True)
+    total_cost = db.Column(db.Numeric(10, 2), nullable=False)
+    timestamp = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), onupdate=db.func.current_timestamp(), nullable = True)
+    pharmacy = db.Column(db.String(50), nullable= False)
+
+    def __init__(self, customer_name, phno, total_cost, pharmacy):
+        self.customer_name = customer_name
+        self.phno = phno
+        self.total_cost = total_cost
+        self.pharmacy = pharmacy
+
 pharmacy_classes= {
     'pharmacy1': pharmacy1,
     'pharmacy2': pharmacy2,
@@ -219,6 +233,31 @@ def delete_medication(medication_id):
     else:
         return jsonify(error='Medication not found'), 404
     
-    
+@app.route('/add-customer', methods=['POST'])
+def add_customer():
+    data = request.json
+    customer_name = data.get('customerName')
+    total_cost = data.get('totalCost')
+    phno = data.get('phno')
+    selectedMedicines = data.get('selectedMedicines')
+    pharmacy = data.get('pharmacy')
+
+    print("Customer data",customer_name, total_cost, selectedMedicines, pharmacy)
+    try:
+        # Insert the customer data into the customer table
+        new_customer = customer(customer_name=customer_name, total_cost=total_cost, pharmacy = pharmacy, phno= phno)
+        db.session.add(new_customer)
+        db.session.commit()
+        return jsonify(message='Customer data added successfully')
+    except Exception as e:
+        return jsonify(error=str(e)), 500
+
+@app.route('/customer-data/<string:pharmacy>', methods=['GET'])
+def get_customer_data(pharmacy):
+    customers = customer.query.filter_by(pharmacy = pharmacy).all()
+    print(customer)
+    customer_data = [{'customer_name': customer.customer_name,'phno':customer.phno, 'total_cost': float(customer.total_cost), 'timestamp':customer.timestamp} for customer in customers]
+    return jsonify(customers=customer_data)
+
 if __name__ == '__main__':
     app.run(debug=True)

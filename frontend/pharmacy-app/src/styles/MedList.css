@@ -1,0 +1,54 @@
+/* MedList.css */
+.ViewTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .ViewTable, .ViewTable th, .ViewTable td {
+    border: 1px solid #ccc;
+  }
+  
+  .ViewTable th, .ViewTable td {
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .ViewTable th {
+    background-color: #f2f2f2;
+  }
+  
+  .ViewTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .ViewTable tr:hover {
+    background-color: #ddd;
+  }
+  
+  button {
+    background-color: #e53935;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #c62828;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    margin-bottom: 20px;
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
